@@ -72,12 +72,9 @@ def ves(system: Poly_system) -> bool:
                 print("Ложные корни")
                 return False
             print("\nПодстановка этих корней в исходную систему:")
-            #Каждый раз вот эту новую систему нужно делать полем как исходную
             return ves(subbed_system)
         all_roots.add(s)
-        for var in current_values:
-            current_values[var] = None     
-        return True
+        return
         
     print(system) 
     x_m, roots = system.eliminate_varibles()

@@ -186,6 +186,7 @@ class Poly_system:
         return False
 
     def solve_system(self) -> list:
+
         roots = set()
         for p in self.polys:
             cur_roots = real_roots(Poly(p.poly, self.x_m))
