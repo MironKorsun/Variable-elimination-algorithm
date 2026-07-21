@@ -1,58 +1,62 @@
 # from AIP import *
 import config
 from implemented_structures import Poly_with_degrees, Poly_system, Solutions_set
-import AIP
+import VES
 
-AIP.all_roots = Solutions_set([])
-AIP.initial_system = Poly_system([])
+VES.all_roots = Solutions_set([])
+VES.initial_system = Poly_system([])
 
 print("\nХотите: 1) Решить систему или 2) Найти глобальный минимум?")
 match input("Введите 1 или 2: "):
     case '1':
         for i in range(int(input("\nВведите количество многочленов: "))):
-            AIP.initial_system.insert(input(f"Введите многочлен номер {i+1}: "))
+            VES.initial_system.insert(input(f"Введите многочлен номер {i+1}: "))
 
         print("\nИсходная задача")
-        AIP.aip(AIP.initial_system)
+        VES.ves(VES.initial_system)
         print("\nОтвет:")
-        print(AIP.all_roots)
+        print(VES.all_roots)
 
     case '2':
         p = Poly_with_degrees(input("\nВведите многочлен: "))
         for v in config.variables:
-            AIP.initial_system.insert(p.diff(v))
+            VES.initial_system.insert(p.diff(v))
 
         print("\nВведите границы:")
-        borders = [[0, 0] for _ in config.variables]
-        for i in range(len(config.variables)):
-            borders[i][0] = float(input(f"Левая граница по {config.variables[i]}: "))
-            borders[i][1] = float(input(f"Правая граница по {config.variables[i]}: "))
+        borders = dict()
+        for var in config.variables:
+            borders[var] = [
+                float(input(f"Левая граница по {var}: ")),
+                float(input(f"Правая граница по {var}: "))
+            ]
+        print("\nБез учета границ")
+        VES.ves(VES.initial_system)
 
-        print("\nОбласть внутри")
-        AIP.aip(AIP.initial_system)
-
-        for i in range(len(config.variables)):
-            for b in borders[i]:
-                p_subs = p.subs(config.variables[i], b)
-                AIP.initial_system = Poly_system([])
+        for x_i in borders:
+            for b in borders[x_i]:
+                p_subs = p.subs(x_i, b)
+                VES.initial_system = Poly_system([])
                 for v in config.variables:
-                    AIP.initial_system.insert(p_subs.diff(v))
-                print(f"\nГрань {config.variables[i]} = {b}")
-                config.current_values[config.variables[i]] = b
-                AIP.aip(AIP.initial_system)
+                    VES.initial_system.insert(p_subs.diff(v))
+                print(f"\nГрань {x_i} = {b}")
+                config.current_values[x_i] = b
+                VES.ves(VES.initial_system)
 
-        print("\nЭкстремумы:")
-        print(AIP.all_roots)
-
-        print("\nОтвет:")
+        print("\nЭкстремумы на рассматриваемой области:")
         global_min = None
         min_value = None
-        for r in AIP.all_roots:
-            value = float(p.subs(r.solution).poly.as_expr())
-            if min_value == None or value < min_value:
-                min_value = value
-                global_min = r
-        print(f"Значение: {min_value}")
-        print(f"Точка: {global_min}")
+        for r in VES.all_roots:
+            if all(b[0] <= r.solution[var] and r.solution[var] <= b[1] for var, b in borders.items()):
+                value = float(p.subs(r.solution).poly.as_expr())
+                print("Точка:", r, "Значение:", round(value, config.round_parameter))
+                if min_value == None or value < min_value:
+                    min_value = value
+                    global_min = [r]
+                elif value == min_value:
+                    global_min.append(r)
+        print(f"\nГлобальный минимум = {min_value} и достигается в:")
+        for i, point in enumerate(global_min):
+            print(f"Точке {i+1}: {point}")
+        
 
        

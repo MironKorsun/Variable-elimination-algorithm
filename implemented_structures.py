@@ -1,13 +1,13 @@
 from sympy import *
 from sortedcontainers import SortedSet
-from config import variables, round_parameter
+from config import variables, round_parameter, close_zero
 
 class Solution:
     def __init__(self, dic):
-        self.solution = dict({var: dic[var] for var in dic if all(value != None for value in tuple(dic.values()))})
+        self.solution = {var: val for var, val in dic.items() if val is not None}
     
     def __repr__(self):
-        return str(self.solution)
+        return '{' + ', '.join([f"{var}: {round(val, round_parameter)}" for var, val in self.solution.items()]) + '}'
     
     __str__ = __repr__
 
@@ -20,15 +20,15 @@ class Solution:
         return tuple(self.solution.values()).__hash__()
 
 class Solutions_set:
-    null_solution = Solution(dict())
+    empty_solution = Solution(dict())
 
     def __init__(self, solutions):
         self.set = SortedSet(solutions, key=self._sorting_key)
-        if self.null_solution in self.set:
-            self.set.remove(self.null_solution)
+        if self.empty_solution in self.set:
+            self.set.remove(self.empty_solution)
 
     def add(self, other):
-        if (other in self.set) or (other == self.null_solution):
+        if (other in self.set) or (other == self.empty_solution):
             return
         self.set.add(other)
 
@@ -40,13 +40,13 @@ class Solutions_set:
     
     def __str__(self):
         if len(self.set) == 0:
-            return '{}'
+            return 'Пустое множество {}'
         return '\n'.join(str(s) for s in self.set)
 
 class Poly_with_degrees: 
     def __init__(self, expr):
         try:
-            if abs(float(expr)) < 0.0001:
+            if abs(float(expr)) < close_zero:
                 expr = 0
         except:
             pass
@@ -91,7 +91,7 @@ class Poly_with_degrees:
         return self.poly.__hash__()
 
     def __str__(self):
-        return str(Poly(N(self.poly.as_expr(), round_parameter), variables[self.x_m_index])).split(', ')[0].replace('Poly(', '')
+        return str(Poly(N(self.poly.as_expr(), round_parameter), variables[self.x_m_index])).split(', ')[0].replace('Poly(', '').replace('**', '^') + " = 0"
     
     __repr__ = __str__
 
@@ -110,7 +110,7 @@ class Poly_with_degrees:
     def __itruediv__(self, other):
         if not isinstance(other, Poly_with_degrees):
             other = Poly_with_degrees(other)
-        self.poly /= other.poly
+        self = Poly_with_degrees(self.poly/other.poly)
         return self
 
 class Poly_system:
@@ -152,8 +152,17 @@ class Poly_system:
         return Poly_system(self.polys)
 
     def insert(self, p):
-        if not isinstance(p, Poly_with_degrees):
-            p = Poly_with_degrees(p)
+        if isinstance(p, Poly_with_degrees):
+            p = p.poly.as_expr()
+        elif isinstance(p, Poly):
+            p = p.as_expr()
+        else:
+            p = sympify(p)
+        # mx_coeff = max([abs(part.as_coeff_Mul()[0]) for part in p.as_ordered_terms()])
+        # if mx_coeff != 0:
+        #     p /= mx_coeff
+        # p = Add(*[part if abs(part.as_coeff_Mul()[0]) > 0.001 else 0 for part in p.as_ordered_terms()])
+        p = Poly_with_degrees(p)
         if p in self.polys or p == self.zero_poly:
             return
         self.polys.add(p)
@@ -179,12 +188,13 @@ class Poly_system:
     def solve_system(self) -> list:
         roots = set()
         for p in self.polys:
-            cur_roots = set(r.round(round_parameter) for r in real_roots(Poly(p.poly, self.x_m)))
+            cur_roots = real_roots(Poly(p.poly, self.x_m))
+            cur_roots = set(round(float(r), 20) for r in cur_roots)
             if len(roots) == 0:
                 roots = cur_roots
             else:
                 roots &= cur_roots
-        return [round(float(r), round_parameter) for r in roots]
+        return roots
 
     def eliminate_varibles(self):
         if self.has_nonzero_constants():
