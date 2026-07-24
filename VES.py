@@ -63,15 +63,15 @@ def ves(system: Poly_system) -> bool:
     if system.l == 0:
         s = Solution(current_values)
         if s == Solution(dict()):
-            print("Нет корней")
+            print("No roots")
             return False
-        print(f"Корни: {s}")
+        print(f"Roots: {s}")
         subbed_system = initial_system.subs(s.solution)
         if subbed_system.l != 0:
             if len(s.solution.items()) == len(current_values.items()):
-                print("Ложные корни")
+                print("Extraneous roots")
                 return False
-            print("\nПодстановка этих корней в исходную систему:")
+            print("\nSubstituting these roots into the original system:")
             return ves(subbed_system)
         all_roots.add(s)
         return
@@ -84,7 +84,7 @@ def ves(system: Poly_system) -> bool:
     for r in roots:
         print()
         current_values[x_m] = r
-        print(f"Замена {x_m} = {round(r, round_parameter)}:")
+        print(f"Substituting {x_m} = {round(r, round_parameter)}:")
         if ves(system.subs(x_m, r)) == True:
             root_found = True
         current_values[x_m] = None
