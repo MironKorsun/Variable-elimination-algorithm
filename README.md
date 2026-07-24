@@ -6,6 +6,27 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/MironKorsun/Variable-elimination-algorithm)
 ![GitHub issues](https://img.shields.io/github/issues/MironKorsun/Variable-elimination-algorithm)
 
+## Installation (Windows)
+Follow these steps to set up the project on Windows:
+
+1. **Clone the repository:**
+```git clone https://github.com/MironKorsun/Variable-elimination-algorithm.git```
+
+2. **Navigate to the project directory:**
+```cd Variable-elimination-algorithm```
+
+3. **Create a virtual environment:**
+```python -m venv venv```
+
+4. **Activate the virtual environment:**
+```source venv/bin/activate```
+
+5. **Install dependencies:**
+```pip install -r requirements.txt```
+
+6. **Run the main script:**
+```python main.py```
+
 ## Documentation
 Full user documentation is available [here](./docs/getting-started.md).
 For examples, check out the [examples](./examples) directory.
