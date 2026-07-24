@@ -9,3 +9,9 @@
 ## Support and contacts
 If you encounter any difficulties or have questions regarding the use of the code, please create a 
 [discussion](https://github.com/MironKorsun/Variable-elimination-algorithm/issues/new/choose) in this repository or send an email to <Miron.Korsun@hotmail.com>.
+
+## Requirements
+- **Python** 3.8 or higher
+- Dependencies are listed in `requirements.txt`
+
+> **Note:** If you discover that it works on a lower version or fails on a specific version, please let me know via [support](https://github.com/MironKorsun/Variable-elimination-algorithm#support-and-contacts).
