@@ -1,0 +1,72 @@
+Enter variables separated by spaces: x y
+
+Do you want to: 1) Solve the system or 2) Find the global minimum?
+Enter 1 or 2: 2
+
+Enter polynomial: x^2 + y^2
+
+Enter bounds:
+Lower bound for x: -2
+Upper bound for x: 2
+Lower bound for y: -2
+Upper bound for y: 2
+
+Without considering bounds:
+2.0*x = 0
+2.0*y = 0
+
+Substituting x = 0.0:
+2.0*y = 0
+
+Substituting y = 0.0:
+Roots: {x: 0.0, y: 0.0}
+
+Bound {x: -2.0}:
+2.0*y = 0
+
+Substituting y = 0.0:
+Roots: {x: -2.0, y: 0.0}
+
+Bound {x: 2.0}:
+2.0*y = 0
+
+Substituting y = 0.0:
+Roots: {x: 2.0, y: 0.0}
+
+Bound {y: -2.0}:
+2.0*x = 0
+
+Substituting x = 0.0:
+Roots: {x: 0.0, y: -2.0}
+
+Bound {y: 2.0}:
+2.0*x = 0
+
+Substituting x = 0.0:
+Roots: {x: 0.0, y: 2.0}
+
+Bound {x: -2.0, y: -2.0}:
+Roots: {x: -2.0, y: -2.0}
+
+Bound {x: -2.0, y: 2.0}:
+Roots: {x: -2.0, y: 2.0}
+
+Bound {x: 2.0, y: -2.0}:
+Roots: {x: 2.0, y: -2.0}
+
+Bound {x: 2.0, y: 2.0}:
+Roots: {x: 2.0, y: 2.0}
+
+Critical points in the domain:
+Point #1: {x: -2.0, y: -2.0} Value: 8.0
+Point #2: {x: -2.0, y: 0.0} Value: 4.0
+Point #3: {x: -2.0, y: 2.0} Value: 8.0
+Point #4: {x: 0.0, y: -2.0} Value: 4.0
+Point #5: {x: 0.0, y: 0.0} Value: 0.0
+Point #6: {x: 0.0, y: 2.0} Value: 4.0
+Point #7: {x: 2.0, y: -2.0} Value: 8.0
+Point #8: {x: 2.0, y: 0.0} Value: 4.0
+Point #9: {x: 2.0, y: 2.0} Value: 8.0
+
+Global minimum = 0.0 and is achieved at:
+Point #1: {x: 0.0, y: 0.0}
