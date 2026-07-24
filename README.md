@@ -6,6 +6,10 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/MironKorsun/Variable-elimination-algorithm)
 ![GitHub issues](https://img.shields.io/github/issues/MironKorsun/Variable-elimination-algorithm)
 
+## Documentation
+Full user documentation is available [here](./docs/getting-started.md).
+For examples, check out the [examples](./examples) directory.
+
 ## Support and contacts
 If you encounter any difficulties or have questions regarding the use of the code, please create a 
 [discussion](https://github.com/MironKorsun/Variable-elimination-algorithm/issues/new/choose) in this repository or send an email to <Miron.Korsun@hotmail.com>.
