@@ -199,7 +199,7 @@ class Poly_system:
 
     def eliminate_varibles(self):
         if self.has_nonzero_constants():
-            print("Нет решений")
+            print("No solutions")
             self.polys.clear()
             self._clear_data()
             return None, []
@@ -220,7 +220,7 @@ class Poly_system:
                 i += 1
         roots = system.solve_system()
         if main_x_m != None and len(roots) == 0:
-            print("Нет решений")
+            print("No solutions")
         return main_x_m, roots
     
     def subs(self, *args):
