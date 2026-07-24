@@ -35,7 +35,7 @@ Follow these steps to set up the project on Windows:
 ```python main.py```
 
 ## Documentation
-Full user documentation is available [here](./docs/getting-started.md).
+Full user documentation is available [here](./docs/user-guide.md).
 For examples, check out the [examples](./examples) directory.
 
 ## Support and contacts
