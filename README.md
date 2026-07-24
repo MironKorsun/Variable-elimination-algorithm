@@ -6,6 +6,13 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/MironKorsun/Variable-elimination-algorithm)
 ![GitHub issues](https://img.shields.io/github/issues/MironKorsun/Variable-elimination-algorithm)
 
+## About
+This project implements the **Variable Elimination Algorithm (VEA)** for:
+- Solving systems of polynomial equations
+- Finding the global minimum of a polynomial on a coordinate parallelepiped
+
+Based on the paper by **V.N. Nefedov** ([arXiv:2607.13658](https://arxiv.org/abs/2607.13658)).
+
 ## Installation (Windows)
 Follow these steps to set up the project on Windows:
 
