@@ -1,0 +1,88 @@
+Enter variables separated by spaces: x y
+
+Do you want to: 1) Solve the system or 2) Find the global minimum?
+Enter 1 or 2: 2
+
+Enter polynomial: (1 - x)^2 + 100*(y - x^2)^2
+
+Enter bounds:
+Lower bound for x: -2
+Upper bound for x: 2
+Lower bound for y: -2
+Upper bound for y: 2
+
+Without considering bounds:
+-200.0*x^2 + 200.0*y = 0
+400.0*x^3 + (2.0 - 400.0*y)*x - 2.0 = 0
+
+GAMMA
+-2.0*x + 2.0 = 0
+-200.0*x^2 + 200.0*y = 0
+
+Substituting x = 1.0:
+200.0*y - 200.0 = 0
+
+Substituting y = 1.0:
+Roots: {x: 1.0, y: 1.0}
+
+DELTA
+-200.0 = 0
+400.0*x^3 + (2.0 - 400.0*y)*x - 2.0 = 0
+200.0*y = 0
+No solutions
+
+Bound {x: -2.0}:
+200.0*y - 800.0 = 0
+
+Substituting y = 4.0:
+Roots: {x: -2.0, y: 4.0}
+
+Bound {x: 2.0}:
+200.0*y - 800.0 = 0
+
+Substituting y = 4.0:
+Roots: {x: 2.0, y: 4.0}
+
+Bound {y: -2.0}:
+400.0*x^3 + 802.0*x - 2.0 = 0
+
+Substituting x = 0.00249:
+Roots: {x: 0.00249, y: -2.0}
+
+Bound {y: 2.0}:
+400.0*x^3 - 798.0*x - 2.0 = 0
+
+Substituting x = 1.4137:
+Roots: {x: 1.4137, y: 2.0}
+
+Substituting x = -0.00251:
+Roots: {x: -0.00251, y: 2.0}
+
+Substituting x = -1.41119:
+Roots: {x: -1.41119, y: 2.0}
+
+Bound {x: -2.0, y: -2.0}:
+Roots: {x: -2.0, y: -2.0}
+
+Bound {x: -2.0, y: 2.0}:
+Roots: {x: -2.0, y: 2.0}
+
+Bound {x: 2.0, y: -2.0}:
+Roots: {x: 2.0, y: -2.0}
+
+Bound {x: 2.0, y: 2.0}:
+Roots: {x: 2.0, y: 2.0}
+
+Critical points in the domain:
+Point #1: {x: -2.0, y: -2.0} Value: 3609.0
+Point #2: {x: -2.0, y: 2.0} Value: 409.0
+Point #4: {x: -1.41119, y: 2.0} Value: 5.82114
+Point #5: {x: -0.00251, y: 2.0} Value: 401.00251
+Point #6: {x: 0.00249, y: -2.0} Value: 400.99751
+Point #7: {x: 1.0, y: 1.0} Value: 0.0
+Point #8: {x: 1.4137, y: 2.0} Value: 0.17136
+Point #9: {x: 2.0, y: -2.0} Value: 3601.0
+Point #10: {x: 2.0, y: 2.0} Value: 401.0
+
+Global minimum = 0.0 and is achieved at:
+Point #1: {x: 1.0, y: 1.0}
