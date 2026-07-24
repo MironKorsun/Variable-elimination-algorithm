@@ -6,30 +6,30 @@ import VES
 VES.all_roots = Solutions_set([])
 VES.initial_system = Poly_system([])
 
-print("\nХотите: 1) Решить систему или 2) Найти глобальный минимум?")
-match input("Введите 1 или 2: "):
+print("\nDo you want to: 1) Solve the system or 2) Find the global minimum?")
+match input("Enter 1 or 2: "):
     case '1':
-        for i in range(int(input("\nВведите количество многочленов: "))):
-            VES.initial_system.insert(input(f"Введите многочлен номер {i+1}: "))
+        for i in range(int(input("\nEnter the number of polynomials: "))):
+            VES.initial_system.insert(input(f"Enter polynomial #{i+1}: "))
 
-        print("\nИсходная задача")
+        print("\nOriginal problem:")
         VES.ves(VES.initial_system)
-        print("\nОтвет:")
+        print("\nAnswer:")
         print(VES.all_roots)
 
     case '2':
-        p = Poly_with_degrees(input("\nВведите многочлен: "))
+        p = Poly_with_degrees(input("\nEnter polynomial: "))
         for v in config.variables:
             VES.initial_system.insert(p.diff(v))
 
-        print("\nВведите границы:")
+        print("\nEnter bounds:")
         borders = dict()
         for var in config.variables:
             borders[var] = [
-                float(input(f"Нижняя граница по {var}: ")),
-                float(input(f"Верхняя граница по {var}: "))
+                float(input(f"Lower bound for {var}: ")),
+                float(input(f"Upper bound for {var}: "))
             ]
-        print("\nБез учета границ")
+        print("\nWithout considering bounds:")
         VES.ves(VES.initial_system)
 
         for i in range(len(config.variables)):
@@ -46,20 +46,20 @@ match input("Введите 1 или 2: "):
                     for var in config.variables:
                         VES.initial_system.insert(p_subs.diff(var))
                     
-                    print(f"\nГраница {substitution}:")
+                    print(f"\nBound {substitution}:")
                     VES.ves(VES.initial_system)
 
                     for v in substitution:
                         config.current_values[v] = None  
 
-        print("\nКритические точки на рассматриваемой области:")
+        print("\nCritical points in the domain:")
         global_min = None
         min_value = None
         for i, r in enumerate(VES.all_roots):
             try:
                 if all(b[0] <= r.solution[var] and r.solution[var] <= b[1] for var, b in borders.items()):
                     value = float(p.subs(r.solution).poly.as_expr())
-                    print(f"Точка {i+1}: {r} Значение: {round(value, config.round_parameter)}")
+                    print(f"Point #{i+1}: {r} Value: {round(value, config.round_parameter)}")
                     if min_value == None or value < min_value:
                         min_value = value
                         global_min = [r]
@@ -68,6 +68,6 @@ match input("Введите 1 или 2: "):
             except:
                 print(r)
                 exit()
-        print(f"\nГлобальный минимум = {min_value} и достигается в:")
+        print(f"\nGlobal minimum = {min_value} and is achieved at:")
         for i, point in enumerate(global_min):
-            print(f"Точке {i+1}: {point}")
+            print(f"Point #{i+1}: {point}")
