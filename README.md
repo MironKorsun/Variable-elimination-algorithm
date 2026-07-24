@@ -19,7 +19,7 @@ Follow these steps to set up the project on Windows:
 ```python -m venv venv```
 
 4. **Activate the virtual environment:**
-```source venv/bin/activate```
+```venv\Scripts\activate.bat```
 
 5. **Install dependencies:**
 ```pip install -r requirements.txt```
