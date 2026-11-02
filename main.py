@@ -1,73 +1,60 @@
-from itertools import combinations, product
+"""Консольный интерфейс: решение системы полиномиальных уравнений или глобальный минимум
+многочлена на координатном параллелепипеде (алгоритм исключения переменных, VES).
+
+Запуск:  python main.py [-q]      (-q / --quiet: не печатать ход алгоритма)
+"""
+from __future__ import annotations
+
+import argparse
+
 import config
-from implemented_structures import Poly_with_degrees, Poly_system, Solutions_set
-import VES
+from VES import global_minimum, solve_system
+from implemented_structures import Context
 
-VES.all_roots = Solutions_set([])
-VES.initial_system = Poly_system([])
 
-print("\nDo you want to: 1) Solve the system or 2) Find the global minimum?")
-match input("Enter 1 or 2: "):
-    case '1':
-        for i in range(int(input("\nEnter the number of polynomials: "))):
-            VES.initial_system.insert(input(f"Enter polynomial #{i+1}: "))
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Variable Elimination Algorithm (VES)")
+    parser.add_argument("-q", "--quiet", action="store_true", help="не печатать ход алгоритма, только ответ")
+    args = parser.parse_args(argv)
+    verbose = not args.quiet
 
-        print("\nOriginal problem:")
-        VES.ves(VES.initial_system)
+    names = input("Enter variables separated by spaces: ").replace(",", " ").split()
+    ctx = Context(names)
+
+    print("\nDo you want to: 1) Solve the system or 2) Find the global minimum?")
+    mode = input("Enter 1 or 2: ").strip()
+
+    if mode == "1":
+        count = int(input("\nEnter the number of polynomials: "))
+        polys = [ctx.parse(input(f"Enter polynomial #{i + 1}: ")) for i in range(count)]
+        if verbose:
+            print("\nOriginal problem:")
+        roots = solve_system(ctx, polys, verbose)
         print("\nAnswer:")
-        print(VES.all_roots)
+        print(roots)
 
-    case '2':
-        p = Poly_with_degrees(input("\nEnter polynomial: "))
-        for v in config.variables:
-            VES.initial_system.insert(p.diff(v))
-
+    elif mode == "2":
+        p = ctx.parse(input("\nEnter polynomial: "))
         print("\nEnter bounds:")
-        borders = dict()
-        for var in config.variables:
-            borders[var] = [
-                float(input(f"Lower bound for {var}: ")),
-                float(input(f"Upper bound for {var}: "))
-            ]
-        print("\nWithout considering bounds:")
-        VES.ves(VES.initial_system)
+        bounds = {}
+        for i, name in enumerate(ctx.names):
+            lo = ctx.parse_number(input(f"Lower bound for {name}: "))
+            hi = ctx.parse_number(input(f"Upper bound for {name}: "))
+            if lo > hi:
+                raise SystemExit(f"Lower bound for {name} is greater than the upper bound")
+            bounds[i] = (lo, hi)
 
-        for i in range(len(config.variables)):
-            
-            for keys in combinations(borders.keys(), i+1):
-                values = [borders[key] for key in keys]
-                for combo in product(*values):
-                    substitution = dict(zip(keys, combo))
-                    for var, val in substitution.items():
-                        config.current_values[var] = val
+        result, _ = global_minimum(ctx, p, bounds, verbose)
+        if result.value is None:
+            print("\nNo critical points in the domain were found.")
+            return
+        print(f"\nGlobal minimum = {round(result.value, config.ROUND_PARAMETER)} and is achieved at:")
+        for i, point in enumerate(result.points):
+            print(f"Point #{i + 1}: {point}")
 
-                    p_subs = p.subs(substitution)
-                    VES.initial_system = Poly_system([])
-                    for var in config.variables:
-                        VES.initial_system.insert(p_subs.diff(var))
-                    
-                    print(f"\nBound {substitution}:")
-                    VES.ves(VES.initial_system)
+    else:
+        raise SystemExit("Enter 1 or 2")
 
-                    for v in substitution:
-                        config.current_values[v] = None  
 
-        print("\nCritical points in the domain:")
-        global_min = None
-        min_value = None
-        for i, r in enumerate(VES.all_roots):
-            try:
-                if all(b[0] <= r.solution[var] and r.solution[var] <= b[1] for var, b in borders.items()):
-                    value = float(p.subs(r.solution).poly.as_expr())
-                    print(f"Point #{i+1}: {r} Value: {round(value, config.round_parameter)}")
-                    if min_value == None or value < min_value:
-                        min_value = value
-                        global_min = [r]
-                    elif value == min_value:
-                        global_min.append(r)
-            except:
-                print(r)
-                exit()
-        print(f"\nGlobal minimum = {min_value} and is achieved at:")
-        for i, point in enumerate(global_min):
-            print(f"Point #{i+1}: {point}")
+if __name__ == "__main__":
+    main()

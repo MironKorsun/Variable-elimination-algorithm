@@ -1,12 +1,28 @@
-from sympy import symbols
+"""Параметры алгоритма.
 
-syms = symbols(input("Enter variables separated by spaces: "))
-try:
-    variables = list(syms)
-except:
-    variables = [syms]
+Модуль не запрашивает ввод и не имеет побочных эффектов при импорте
+(раньше переменные вводились прямо здесь, из-за чего код нельзя было ни
+импортировать, ни тестировать).
+"""
+from sympy import QQ
 
-current_values = dict.fromkeys(variables, None)
-# Number of decimal places for rounding when printing to terminal
-round_parameter = 5
-close_zero = 0.0001
+# Пока в систему не подставлен иррациональный корень, вся арифметика точная (QQ).
+# После подстановки приближённого корня многочлены хранятся как рациональные числа,
+# округлённые до шага 2^-PRECISION_BITS, и нормируются на максимальный коэффициент.
+PRECISION_BITS = 300
+
+# Коэффициент считается «шумовым нулём», если он меньше CHOP относительно
+# естественного масштаба операции (см. Poly_with_degrees).
+CHOP = QQ(1, 10**30)
+
+# Ширина изолирующего интервала при поиске вещественных корней: 10^-ROOT_EPS_DIGITS.
+ROOT_EPS_DIGITS = 70
+
+# Корень приближённого многочлена принимается, если |p(r)| <= RESIDUAL_TOL * (сумма модулей слагаемых).
+RESIDUAL_TOL = QQ(1, 10**20)
+
+# Число знаков после запятой при печати в терминал.
+ROUND_PARAMETER = 5
+
+# Относительная точность, с которой совпадающими считаются две точки / два значения.
+SOLUTION_TOL = 1e-9
